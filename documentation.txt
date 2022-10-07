@@ -1,0 +1,107 @@
+can't use swiftocr on winodws (only mac)
+UNINSTALLED ALL OF THE BELOW
+
+https://airtdave.medium.com/using-cocoapods-on-windows-dec471735f51
+downloaded and installed ruby to C drive. "gem list" in console to see version, added to environment variable list
+downloaded and isntalled curl 64 bit to C drive. "curl --help" in cmd to test, added to environment variable list
+needs git but already have
+installed cocoapods by typing "gem install cocoapods --pre". "pod -- version" to check version. 
+
+FIGURE THIS THING OUT
+https://ocr.space/ocrapi
+
+following this guide https://levelup.gitconnected.com/a-beginners-guide-to-tesseract-ocr-using-pytesseract-23036f5b2211
+
+downloaded tesseract v 5.0.1.20220118 from https://digi.bib.uni-mannheim.de/tesseract/?C=M;O=D
+made python correctly add stuff to PATH
+pip install pytesseract
+WORKING POG
+
+using this https://www.geeksforgeeks.org/how-to-download-all-images-from-a-web-page-in-python/
+pip install requests
+pip install html5lib
+pip install bs4
+
+working but not downloading all images on all websites, only really worked on stocksnap.io(?)
+
+//might try this next https://www.thepythoncode.com/article/download-web-page-images-python
+//pip install tqdm
+
+works the same but not what i need also slower. 
+
+//try this next https://www.thepythoncode.com/code/download-web-page-images-python#download_images_js
+//pip install requests_html 
+
+can't figure out how to run so went back to first one. 
+look into href="https://googleads.g.doubleclick.net/~~~" filter to download only src tags under those. 
+also src="googlesyndication"
+
+https://stackoverflow.com/questions/50284554/find-all-occurrences-of-string-in-html-file
+
+Apprently can't live read a website with an OCR. have to download ads for now (or take screenshots of the ads). Maybe look into making something like that in future. 
+
+auto take screenshots of certain html sections of page https://www.tutorialspoint.com/how-to-get-the-screenshot-of-a-particular-section-of-the-page-like-the-logo-of-a-website-in-selenium-with-python
+pip install selenium
+pip install webdriver-manager
+
+//div[@id="ad-container"]
+//nav[@class="header_nav"]
+
+WORKING I ACTUALLY GOT IT TO AUTO CROP AN AD.
+Now try to get multiple ads cropping correctly. Not sure how at this point. Might ask Nbot.
+got cropping working, had to ignore elements not on screen
+
+pytesseract attempt at improving accuracy
+https://stackoverflow.com/questions/64099248/pytesseract-improve-ocr-accuracy
+pip install opencv-python
+pip install numpy
+
+pytesseract working much better now
+
+Need to get list of companies from powrbot.com https://powrbot.com/companies/list-of-companies-in-united-states/
+sent email about it, gonna wait for reply before i find another
+
+Going to manually add companies to a csv files that the ads find. Will tell each cap to check the list for a company from the text. If it finds it then +1 on that list to that company, 
+if not then save that string txt and move on. also need to make ads only +1 once per total screencap? (in case one page has 5 ads of same company?)
+
+Can't get it to compare img strings to csv file of companies. imageText doesn't work and neither does opening a new file and reading it. Also file2 == '' broke when imageText == '' worked. 
+
+pip install fuzzywuzzy
+
+fuzzywuzzy doesn't work great. 
+look into woosh for text searching (nvmd)
+
+assigning into a dict each found ad is now working. the hard part is getting it to find the ads. need to work more on pytesseract for more accuracy, 
+and use the following link to give each company more options for being found:
+https://stackoverflow.com/questions/21744804/how-to-read-comma-separated-values-from-a-text-file-then-output-result-to-a-tex
+
+pytesseract working as best I can after fudging with the settings. 
+Got split() working on companyNames.txt so I can get 1 company name from multiple possibilities now. 
+Still would like to get horizontal banner ads working better, maybe i can split the ad into parts so psm 4 (vertical block read) works better?
+Also would like to only print to a txt file and save the image file if the ad was not found, for a better companynames.txt (i would only have to edit in the non found ones)
+
+Either way...
+SOFTWARE COMPLETE. MISSION ACCOMPLISHED. 
+
+
+pip uninstall fuzzywuzzy
+pip uninstall html5lib
+pip uninstall bs4
+
+pip install matplotllib
+
+got pie chart working correctly with absolute values. 
+made the relevent screenshot save into the text folder along with the relevent text like before (for easier debugging). should have same name so i can compare them. 
+Might have to re evaulate a better debugging process. maybe making a new folder for each pair (picture and text).
+
+ran 100 queries on zerohedge.com (a known pro russian far right conspiracy site) using peerblock and protonvpn for safety. pie chart looks good. program working as intended. 
+
+just need to redo the naming process of the files for better clarity on which picture they are linked to
+
+Now its just a matter of getting these sites, and adding companies to the list
+
+Added a feature for keeping a screenshot of the entire page whenever a new company is found, so I can test false positives as well as give proof if companies ask. 
+Found first false postive with this feature already. An ad that it thought was an HP ad was actually some water bottle company with the text "H/PHC" or something. 
+It seemed to ignore the / and thought it was an HP ad. Might need to look into this. 
+
+Need to make feature that auto exports the dict to a saveable form after completeing a long query. 
