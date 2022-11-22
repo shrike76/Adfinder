@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import numpy
 #for deleting files
 import glob
+import json
 
 #selenium 4
 from selenium import webdriver
@@ -21,6 +22,27 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
+
+#main folder path
+a1 = os.path.abspath(os.path.dirname(__file__))
+r1 = "dump"
+directorydump = os.path.join(a1, r1)
+#directorydump = "%USERPROFILE%\\Documents\\AdRevealer\\main\\dump"
+
+#output folder path
+r2 = "text"
+tempPath = os.path.join(a1, r2)
+#tempPath = "%USERPROFILE%\\Documents\\AdRevealer\\main\\text"
+
+r3 = "ad proof"
+adProof = os.path.join(a1, r3)
+#adProof = "%USERPROFILE%\\Documents\\AdRevealer\\main\\ad proof"
+
+cap = os.path.join(a1, 'dump\\cap.png')
+
+companyNames = os.path.join(a1, "CompanyNames.txt")
+
+chart = os.path.join(a1, 'chart\\piechart.png')
 
 #d is how many queries will be performed, initializes here at 0. 
 d = 0
@@ -33,10 +55,11 @@ while d < 1:
     #moves the window to my second monitor (so i can game while this is running teehee)
     chrome_options = Options()
     chrome_options.add_argument("--window-position=3000,0")
+    chrome_options.add_argument("--ignore-certificate-errors-spki-list")
     #browser exposes an executable file
     #Through Selenium test we will invoke the executable file which will then
     #invoke actual browser
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chrome_options=chrome_options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chrome_options=chrome_options )
     #to maximize the browser window
     driver.set_window_size(2560, 1440)
     driver.maximize_window()
@@ -91,13 +114,6 @@ while d < 1:
     #to close the browser
     driver.close()
 
-    #main folder path
-    directorydump = 'D:\\Users\\shrike\\Documents\\python\\main\\dump'
-
-    #output folder path
-    tempPath = "D:\\Users\\shrike\\Documents\\python\\main\\text"
-
-    adProof = "D:\\Users\\shrike\\Documents\\python\\main\\ad proof"
 
     #iterating the images inside the folder https://www.geeksforgeeks.org/python-ocr-on-all-the-images-present-in-a-folder-simultaneously/
     for imageName in os.listdir(directorydump)[1:]:
@@ -118,7 +134,7 @@ while d < 1:
         companyFound = False
 
         #checks line by line through the list of companies if the a company is somewhere in the imageText https://stackabuse.com/read-a-file-line-by-line-in-python/
-        with open("D:\\Users\\shrike\\Documents\\python\\main\\CompanyNames.txt", 'r') as fp:
+        with open(companyNames, 'r') as fp:
             for line in fp:
                 #flag variable used for breaking out of nested loop. slighter faster program.
                 flag = False
@@ -148,7 +164,7 @@ while d < 1:
                         if currentLine[0] not in totalCompanyList:
                             totalCompanyList[currentLine[0]] = 0
                             #copies the full web screenshot each time it finds a new ad, for proof in case companies ask and data validation. 
-                            shutil.copy('D:\\Users\\shrike\\Documents\\python\\main\\dump\\cap.png', adProof)
+                            shutil.copy(cap, adProof)
                             #s exists to remove the \n that comes out of currentLine[0]. I spent like an hour trying to get it to just print the found company name and it always had a new line or \n so I just told it to remove it. 
                             s = currentLine[0].replace('\n', '')
                             copiedAdProof = adProof + '\\' + s + '.png'
@@ -189,6 +205,8 @@ while d < 1:
 
 #prints the final dict list of all found companies 
 print(totalCompanyList)
+with open('dictExport.txt', 'w') as convert_file:
+    convert_file.write(json.dumps(totalCompanyList))
 
 # Get the Keys and store them in a list
 labels = list(totalCompanyList.keys())
@@ -205,7 +223,7 @@ def absolute_value(val):
 #displays the contents of totalcompanylist as a pie chart https://stackoverflow.com/questions/41088236/how-to-have-actual-values-in-matplotlib-pie-chart-displayed
 plt.pie(values, labels=labels, autopct=absolute_value)
 plt.axis('equal')
-plt.savefig('D:\\Users\\shrike\\Documents\\python\\main\\chart\\piechart.png')
+plt.savefig(chart)
 
 #plays a sound when the program completes. Helpful for me. 
 #winsound.PlaySound('tada.wav', winsound.SND_FILENAME)
