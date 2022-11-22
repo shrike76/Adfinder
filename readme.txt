@@ -1,4 +1,4 @@
-This program is designed to find the ads on any webpage, and identify the company they belong to, them organize them into a dictionary. 
+This program is designed to find the ads on any webpage, and identify the company they belong to, then organize them into a dictionary. 
 The dictionary then auto generates a pie chart.
 
 This program was developed with python, selenium, and pytesseract.
@@ -38,6 +38,9 @@ pip install
 
 navigate to line 45 in seleniumtest.py, and set the website you want to use it on. https://speedtest.net/ is default because it has easy ads to review. 
 navigate to line 32 and set d < the number of times you want the program to run. I usually do 500 when querying a major website. 
+
+Absolute paths need to be changed to your personal path. This must be done for the following lines:
+95,98,100,121,151,208
 
 Make sure the dump, text, and ad proof folders are empty (besides the zerohedge folder) before using this. 
 
