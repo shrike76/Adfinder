@@ -95,3 +95,6 @@ david weekley homes,davidweekleyhomes.com
 Wave Browser
 Windstream
 HBOMAX
+CenturyLink,CenturyLink’
+RetailMeNot
+KALESAFE

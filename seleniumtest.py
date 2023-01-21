@@ -51,7 +51,7 @@ totalCompanyList = {}
 #FULLTEMPPATH GETS OVERWRITTEN IF C DOES NOT EXIST
 c = 0
 #set d < "how many times you want the program to run"
-while d < 1:
+while d < 5:
     #moves the window to my second monitor (so i can game while this is running teehee)
     chrome_options = Options()
     chrome_options.add_argument("--window-position=3000,0")
@@ -64,9 +64,11 @@ while d < 1:
     driver.set_window_size(2560, 1440)
     driver.maximize_window()
 
+    #must be changed to whatever website you wish to query. must also change the name_of_website field. 
+    name_of_website = "speedtest"
+    queried_url = "https://speedtest.net/"
     #get method to launch the URL
-    driver.get("https://speedtest.net/")
-
+    driver.get(queried_url)
         #to refresh the browser
         #driver.refresh()
     #needed for ads to load
@@ -83,7 +85,6 @@ while d < 1:
     #step 2 is to avoid doubling of ads as each ad has 2 id = 'ads'. 
     #adList[::2]
     for i in adList[::2]:
-
         #to get the element location 
         location = i.location
         #to get the dimension the element
@@ -113,7 +114,6 @@ while d < 1:
         
     #to close the browser
     driver.close()
-
 
     #iterating the images inside the folder https://www.geeksforgeeks.org/python-ocr-on-all-the-images-present-in-a-folder-simultaneously/
     for imageName in os.listdir(directorydump)[1:]:
@@ -201,12 +201,15 @@ while d < 1:
     d += 1
     print("total queries: " + str(d))
 
-
-
 #prints the final dict list of all found companies 
 print(totalCompanyList)
-with open('dictExport.txt', 'w') as convert_file:
+with open('dictExport.json', 'w') as convert_file:
     convert_file.write(json.dumps(totalCompanyList))
+
+#creates json named websiteExport for later copy to the website table in redshift. 
+websiteDict = {'name': name_of_website, 'url': queried_url}
+with open('websiteExport.json', 'w') as file:
+    file.write(json.dumps(websiteDict))
 
 # Get the Keys and store them in a list
 labels = list(totalCompanyList.keys())
@@ -240,7 +243,7 @@ plt.savefig(chart)
 # 
 # EVERYTHING BELOW THIS POINT IS LEFT OVER CODE
 # 
-#    
+#
    
    
    

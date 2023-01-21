@@ -105,3 +105,10 @@ Found first false postive with this feature already. An ad that it thought was a
 It seemed to ignore the / and thought it was an HP ad. Might need to look into this. 
 
 Need to make feature that auto exports the dict to a saveable form after completeing a long query. 
+
+pip install redshift_connector
+pip install boto3 (https://github.com/boto/boto3)
+pip install aws-shell (https://github.com/awslabs/aws-shell)
+pip install psycopg2
+
+created dbdata.py for uploading data to s3 and copying to redshift for longterm storage

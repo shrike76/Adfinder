@@ -27,20 +27,52 @@ ad proof is a folder where a single screenshot of the entire page is saved for e
 
 chart is where the pie chart is stored
 
-dump is where the images are temporaryly stored. They are auto deleted after being used. 
+dump is where the images are temporarly stored. They are auto deleted after being used. 
 
 text is where the images and text transcribed are stored ONLY if a company is not found. Can use this to improve the CompanyNames.txt database
 
+several .json files are created in this process. These can be ignored. They will overwrite when the program runs again. 
+
+dbdata.py is created to upload the data gathered to s3, then to copy the data to redshift where long term storage can be easier achieved, as well as analytical possibilities. 
 
 TO USE:
 
 pip install
 
-navigate to line 45 in seleniumtest.py, and set the website you want to use it on. https://speedtest.net/ is default because it has easy ads to review. 
-navigate to line 32 and set d < the number of times you want the program to run. I usually do 500 when querying a major website. 
+navigate to line 68 and 69 in seleniumtest.py, and set the website you want to use it on. https://speedtest.net/ is default because it has easy ads to review. 
+You must also change the name_of_website variable if you want the folder structure in redshift to work properly.
+navigate to line 54 and set d < the number of times you want the program to run. I usually do 500 when querying a major website. 
 
-Make sure the dump, text, and ad proof folders are empty (besides the zerohedge folder) before using this. 
+Make sure the dump, text, and ad proof folders are empty before using this. 
 
 Create a folder name "AdRevealer" and put the contents of this program inside it 
 
-Then just run the program in your IDE. 
+Then just run selemniumtest.py. 
+
+
+dbdata.py can be run to upload the data to a s3, then to a redshift server. 
+If you want to use dbdata.py on your own s3 and redshift, some of the lines need to be replaced with your addresses. 
+
+
+the following is the schema for the redshift server I am currently running this on. 
+
+CREATE TABLE public.website (
+    website_id integer NOT NULL identity(1,1) ENCODE az64,
+    name character varying(256) NOT NULL ENCODE lzo,
+    url character varying(256) NOT NULL ENCODE lzo,
+    queried_time timestamp without time zone DEFAULT ('now'::text)::timestamp without time zone ENCODE az64,
+    PRIMARY KEY (website_id)
+)
+DISTSTYLE AUTO;
+
+CREATE TABLE public.data (
+    data_id integer NOT NULL identity(1,1) ENCODE az64,
+    website_id integer ENCODE az64,
+    company_name character varying(256) NOT NULL ENCODE lzo,
+    amount integer NOT NULL ENCODE az64,
+    image character varying(256) ENCODE lzo,
+    PRIMARY KEY (data_id),
+    UNIQUE (website_id),
+    FOREIGN KEY (website_id) REFERENCES website(website_id)
+)
+DISTSTYLE AUTO;
