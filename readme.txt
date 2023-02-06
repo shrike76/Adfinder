@@ -41,7 +41,7 @@ pip install
 
 navigate to line 68 and 69 in seleniumtest.py, and set the website you want to use it on. https://speedtest.net/ is default because it has easy ads to review. 
 You must also change the name_of_website variable if you want the folder structure in redshift to work properly.
-navigate to line 54 and set d < the number of times you want the program to run. I usually do 500 when querying a major website. 
+navigate to line 54 and set d < the number of times you want the program to run. I usually do 50 when querying a major website. 
 
 Make sure the dump, text, and ad proof folders are empty before using this. 
 
@@ -51,7 +51,7 @@ Then just run selemniumtest.py.
 
 
 dbdata.py can be run to upload the data to a s3, then to a redshift server. 
-If you want to use dbdata.py on your own s3 and redshift, some of the lines need to be replaced with your addresses. 
+If you want to use dbdata.py on your own s3 and redshift, create a .env file and change the relevent fields to your information. 
 
 
 the following is the schema for the redshift server I am currently running this on. 
@@ -60,14 +60,14 @@ CREATE TABLE public.website (
     website_id integer NOT NULL identity(1,1) ENCODE az64,
     name character varying(256) NOT NULL ENCODE lzo,
     url character varying(256) NOT NULL ENCODE lzo,
-    queried_time timestamp without time zone DEFAULT ('now'::text)::timestamp without time zone ENCODE az64,
+    queried_time timestamp without time zone NULL ENCODE az64,
     PRIMARY KEY (website_id)
 )
-DISTSTYLE AUTO;
+DISTSTYLE AUTO;	
 
 CREATE TABLE public.data (
     data_id integer NOT NULL identity(1,1) ENCODE az64,
-    website_id integer ENCODE az64,
+    website_id integer NULL ENCODE az64,
     company_name character varying(256) NOT NULL ENCODE lzo,
     amount integer NOT NULL ENCODE az64,
     image character varying(256) ENCODE lzo,
@@ -75,4 +75,4 @@ CREATE TABLE public.data (
     UNIQUE (website_id),
     FOREIGN KEY (website_id) REFERENCES website(website_id)
 )
-DISTSTYLE AUTO;
+DISTSTYLE AUTO;	

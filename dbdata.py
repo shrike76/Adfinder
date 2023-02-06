@@ -64,6 +64,16 @@ con.execute("SELECT * FROM website;")
 con.execute("SELECT max(website_id) FROM website LIMIT 1;")
 current_time = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
 
+#appends the current_time field to the websiteExport.json file, so it can copy to the database.
+with open('websiteExport.json') as json_file:
+    json_decoded = json.load(json_file)
+
+json_decoded['queried_time'] = str(current_time)
+
+with open('websiteExport.json', 'w') as json_file:
+    json.dump(json_decoded, json_file)
+
+
 #the path for the http images stored in the s3. 
 image_url = 'https://adrevealerbucket.s3.us-east-2.amazonaws.com/images/'
 #imports the dictionary given from the seleniumtest.py file. sets it equal to data
@@ -110,8 +120,8 @@ s3.Bucket(bname).upload_file(dataExportUpload, "dataExport.json")
 
 #COPY TO REDSHIFT
 conn = a.cursor()
-#copies the websiteExport json file to the website table
-conn.execute("COPY website (name, url) FROM 's3://adrevealerbucket/websiteExport.json' iam_role 'arn:aws:iam::345087817673:role/service-role/AmazonRedshift-CommandsAccessRole-20221216T115930' REGION 'us-east-2' FORMAT AS json 'auto';")
+#copies the websiteExport json file to the website table. Also formats the current_time field to timestamp. 
+conn.execute("COPY website FROM 's3://adrevealerbucket/websiteExport.json' iam_role 'arn:aws:iam::345087817673:role/service-role/AmazonRedshift-CommandsAccessRole-20221216T115930' REGION 'us-east-2' FORMAT AS json 'auto' timeformat 'MM-DD-YYYY_HH-MI-SS';")
 #copies the dataExport json file to the data table
 conn.execute("COPY data FROM 's3://adrevealerbucket/dataExport.json' iam_role 'arn:aws:iam::345087817673:role/service-role/AmazonRedshift-CommandsAccessRole-20221216T115930' REGION 'us-east-2' FORMAT AS json 'auto';")
 a.commit()

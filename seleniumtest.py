@@ -51,7 +51,7 @@ totalCompanyList = {}
 #FULLTEMPPATH GETS OVERWRITTEN IF C DOES NOT EXIST
 c = 0
 #set d < "how many times you want the program to run"
-while d < 5:
+while d < 50:
     #moves the window to my second monitor (so i can game while this is running teehee)
     chrome_options = Options()
     chrome_options.add_argument("--window-position=3000,0")
@@ -66,13 +66,13 @@ while d < 5:
 
     #must be changed to whatever website you wish to query. must also change the name_of_website field. 
     name_of_website = "speedtest"
-    queried_url = "https://speedtest.net/"
+    queried_url = "https://www.speedtest.net/"
     #get method to launch the URL
     driver.get(queried_url)
         #to refresh the browser
         #driver.refresh()
-    #needed for ads to load
-    time.sleep(4)
+    #needed for ads to load. might need to adjust based on website that is being queried.
+    time.sleep(7)
     #identifying the element to capture the screenshot and puts them all in a list
     try: #[contains(@href, 'ruamupr')] //*[contains(@id, 'aw0')]
         adList = driver.find_elements(By.XPATH, "//*[contains(@id, 'ads')]")   
@@ -162,15 +162,15 @@ while d < 5:
                         companyFound = True
                         #checks if found company is in dict list, and if not puts it there and adds +1 to the count to the relevent company. currentline[0] is the first entry in an array that splits each entry in that line with a comma. Designed so only the first entry in the list is added to the dict, despite multiple possibly being detected. 
                         if currentLine[0] not in totalCompanyList:
-                            totalCompanyList[currentLine[0]] = 0
-                            #copies the full web screenshot each time it finds a new ad, for proof in case companies ask and data validation. 
-                            shutil.copy(cap, adProof)
                             #s exists to remove the \n that comes out of currentLine[0]. I spent like an hour trying to get it to just print the found company name and it always had a new line or \n so I just told it to remove it. 
                             s = currentLine[0].replace('\n', '')
+                            totalCompanyList[s] = 0
+                            #copies the full web screenshot each time it finds a new ad, for proof in case companies ask and data validation. 
+                            shutil.copy(cap, adProof)
                             copiedAdProof = adProof + '\\' + s + '.png'
                             #renames the file path so it can be copied correctly and replaces it if it exists
                             os.replace(adProof + '\\cap.png', copiedAdProof)
-                        totalCompanyList[currentLine[0]] += 1
+                        totalCompanyList[s] += 1
                         break
                     #breaks out of nested loop for faster speed?
                     flag = True
