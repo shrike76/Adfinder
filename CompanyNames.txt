@@ -1,5 +1,5 @@
 ziploc
-verizon,is the price you get.
+verizon
 AT&T
 Frontier,OUR FASTEST,FRONTER,FIBER IS HERE,FRONTIER’
 Samsung,samsuncs
@@ -105,7 +105,7 @@ Cadillac,DON'T MAKE ©2102
 Harvest Green
 honda,—SS.RATES PORE,RIDGELINE
 VETERANS COALITION fOR VACCINATION,VETERANSCOALITION£ORVACCINATION
-lendingtree,lendifigtree,lendifigtree Refinance How much do you need?,lendigtree,lendigtree Home Loans,lendiigtree Home Loans
+lendingtree,lendifigtree
 American EXpress,Earn 60,000 Membership
 BUGATCHI
 COTOSEN
@@ -115,11 +115,3 @@ H&R Block,H&R Block.
 disney,disney+
 THE TREVOR PROJECT,THE TREVOR PROJECI™
 AARP
-the weather channel,weather.com
-blue nile,Blue Nile —
-temu,Temu.
-prorateer
-tax act,taxxact
-air portugal,airrortuca,AIRPORTUGAL
-uber eats
-penfed,PENEED

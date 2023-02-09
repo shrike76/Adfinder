@@ -1,6 +1,5 @@
 from distutils.file_util import copy_file
 from logging.handlers import SYSLOG_UDP_PORT
-import sys
 import time
 from PIL import Image
 import pytesseract
@@ -39,10 +38,6 @@ r3 = "ad proof"
 adProof = os.path.join(a1, r3)
 #adProof = "%USERPROFILE%\\Documents\\AdRevealer\\main\\ad proof"
 
-#checks if your adproof folder is empty before starting, and exits the program if not. 
-if len(os.listdir(adProof)) != 0:
-    sys.exit("Delete everything in your adProof folder and try again.")
-
 cap = os.path.join(a1, 'dump\\cap.png')
 
 companyNames = os.path.join(a1, "CompanyNames.txt")
@@ -70,8 +65,8 @@ while d < 50:
     driver.maximize_window()
 
     #must be changed to whatever website you wish to query. must also change the name_of_website field. 
-    name_of_website = "theweatherchannel"
-    queried_url = "https://weather.com/"
+    name_of_website = "speedtest"
+    queried_url = "https://www.speedtest.net/"
     #get method to launch the URL
     driver.get(queried_url)
         #to refresh the browser
@@ -229,7 +224,6 @@ def absolute_value(val):
     return a
 
 #displays the contents of totalcompanylist as a pie chart https://stackoverflow.com/questions/41088236/how-to-have-actual-values-in-matplotlib-pie-chart-displayed
-#currently useless as I'm now uploading the data gathered to a database, and can run analytics from there, but I'll keep this here for anyone else who wants it. 
 plt.pie(values, labels=labels, autopct=absolute_value)
 plt.axis('equal')
 plt.savefig(chart)
@@ -237,6 +231,15 @@ plt.savefig(chart)
 #plays a sound when the program completes. Helpful for me. 
 #winsound.PlaySound('tada.wav', winsound.SND_FILENAME)
 
+
+
+# plt.pie(values, labels=labels,
+#          autopct=lambda p: '{:.0f}%'.format(p * sum(values) / 100),
+#          shadow=True, startangle=90)
+
+# plt.pie(values, labels=labels)
+# plt.show()
+#
 # 
 # EVERYTHING BELOW THIS POINT IS LEFT OVER CODE
 # 
