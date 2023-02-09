@@ -39,9 +39,9 @@ TO USE:
 
 pip install
 
-navigate to line 68 and 69 in seleniumtest.py, and set the website you want to use it on. https://speedtest.net/ is default because it has easy ads to review. 
+navigate to line 73 and 74 in seleniumtest.py, and set the website you want to use it on. https://speedtest.net/ is default because it has easy ads to review. 
 You must also change the name_of_website variable if you want the folder structure in redshift to work properly.
-navigate to line 54 and set d < the number of times you want the program to run. I usually do 50 when querying a major website. 
+navigate to line 59 and set d < the number of times you want the program to run. I usually do 50 when querying a major website. 
 
 Make sure the dump, text, and ad proof folders are empty before using this. 
 
