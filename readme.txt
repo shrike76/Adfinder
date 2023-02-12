@@ -66,13 +66,14 @@ CREATE TABLE public.website (
 DISTSTYLE AUTO;	
 
 CREATE TABLE public.data (
-    data_id integer NOT NULL identity(1,1) ENCODE az64,
-    website_id integer NULL ENCODE az64,
+    data_id integer NOT NULL identity(1, 1) ENCODE az64,
+    website_id integer ENCODE az64,
     company_name character varying(256) NOT NULL ENCODE lzo,
     amount integer NOT NULL ENCODE az64,
     image character varying(256) ENCODE lzo,
+    data_time timestamp without time zone ENCODE az64,
     PRIMARY KEY (data_id),
     UNIQUE (website_id),
     FOREIGN KEY (website_id) REFERENCES website(website_id)
-)
-DISTSTYLE AUTO;	
+) 
+DISTSTYLE AUTO;

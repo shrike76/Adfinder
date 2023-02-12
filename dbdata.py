@@ -128,9 +128,11 @@ a.commit()
 #grabs the most recent data_ids enterting into the data base, and limits them to the amount of items found in the length of dictExport.json
 #then sanitizes it into a comma delimited list
 #then updates the rows inserted website_id with the foreign key of the website_id it found
-conn.execute("SELECT data_id FROM data ORDER BY data_id DESC LIMIT " + str(len(data.items())))
-lastId = conn.fetchall()
-lastId = [str(x[0]) for x in lastId]
-lastId = ','.join(lastId)
-conn.execute("UPDATE data SET website_id = (SELECT max(website_id) FROM website) WHERE data_id IN (" + lastId + ");")
+# conn.execute("SELECT data_id FROM data ORDER BY data_id DESC LIMIT " + str(len(data.items())))
+# lastId = conn.fetchall()
+# lastId = [str(x[0]) for x in lastId]
+# lastId = ','.join(lastId)
+
+conn.execute("UPDATE data SET website_id = (SELECT website_id FROM website ORDER BY queried_time DESC LIMIT 1) WHERE (SELECT data_id FROM data WHERE data_time BETWEEN current_date - INTERVAL '1' MINUTE AND current_date);")
 a.commit()
+
