@@ -70,8 +70,8 @@ while d < 50:
     driver.maximize_window()
 
     #must be changed to whatever website you wish to query. must also change the name_of_website field. 
-    name_of_website = "theweatherchannel"
-    queried_url = "https://weather.com/"
+    name_of_website = "speedtest"
+    queried_url = "https://www.speedtest.net/"
     #get method to launch the URL
     driver.get(queried_url)
         #to refresh the browser
@@ -79,17 +79,22 @@ while d < 50:
     #needed for ads to load. might need to adjust based on website that is being queried.
     time.sleep(7)
     #identifying the element to capture the screenshot and puts them all in a list
-    try: #[contains(@href, 'ruamupr')] //*[contains(@id, 'aw0')]
-        adList = driver.find_elements(By.XPATH, "//*[contains(@id, 'ads')]")   
+    try: #[contains(@href, 'ruamupr')] //*[contains(@id, 'aw0')] 
+        #adList = driver.find_elements(By.XPATH, "//*[contains(@id, 'ads')]")
+        adList = driver.find_elements(By.XPATH, "//div[contains(@id, 'ads')]")
+        #adList = driver.find_elements(By.XPATH, "//div[contains(@class, 'ads')]")
     except:
         print("Failed to find ad")
+
+    for i in adList:
+        print(i)
 
     #for naming the files
     f = 0
     #crops all elements found above into seperate screenshots https://www.tutorialspoint.com/how-to-get-the-screenshot-of-a-particular-section-of-the-page-like-the-logo-of-a-website-in-selenium-with-python
     #step 2 is to avoid doubling of ads as each ad has 2 id = 'ads'. 
     #adList[::2]
-    for i in adList[::2]:
+    for i in adList:
         #to get the element location 
         location = i.location
         #to get the dimension the element

@@ -28,7 +28,7 @@ shopify,linkpop
 forever redwood,www.foreverredwood.com,Frorever REDWOOoD,Frorever REDWwooD
 powertec,ecaitara,$649,$949
 chrono24
-squaremade
+squaremade,squaremade™
 langmuir systems
 automation24
 g-shock,G-SHOCK ~
@@ -123,3 +123,4 @@ tax act,taxxact
 air portugal,airrortuca,AIRPORTUGAL
 uber eats
 penfed,PENEED
+fanatical
