@@ -88,10 +88,10 @@ with open('websiteExport.json') as json_file:
 
 #reformats the imported dictionary into a convertable form to redshift. creates a list of the dictionary entries. then creates a file named dataExport.json for copying. 
 for key, value in data.items():
-    formatted_data = ({'company_name': key, 'amount': value, 'image': image_url + website['name'] + "/" + current_time + "/" + key + '.png'})
+    formatted_data = ({'company_name': key, 'amount': value, 'image': image_url + website['name'] + "/" + current_time + "/" + key + '.png', 'data_time': current_time})
     zipped_list.append(formatted_data)
 
-#sanatizes the dataExport.json file to a format redshift likes
+#sanitizes the dataExport.json file to a format redshift likes
 with open('dataExport.json', 'w') as file:
     file.write(json.dumps(zipped_list).replace("]","").replace("[","").replace("},","}"))
 
@@ -121,9 +121,9 @@ s3.Bucket(bname).upload_file(dataExportUpload, "dataExport.json")
 #COPY TO REDSHIFT
 conn = a.cursor()
 #copies the websiteExport json file to the website table. Also formats the current_time field to timestamp. 
-conn.execute("COPY website FROM 's3://adrevealerbucket/websiteExport.json' iam_role 'arn:aws:iam::345087817673:role/service-role/AmazonRedshift-CommandsAccessRole-20221216T115930' REGION 'us-east-2' FORMAT AS json 'auto' timeformat 'MM-DD-YYYY_HH-MI-SS';")
+conn.execute("COPY website FROM 's3://adrevealerbucket/websiteExport.json' iam_role 'arn:aws:iam::345087817673:role/service-role/AmazonRedshift-CommandsAccessRole-20221216T115930' REGION 'us-east-2' FORMAT AS json 'auto' timeformat 'DD-MM-YYYY_HH-MI-SS';")
 #copies the dataExport json file to the data table
-conn.execute("COPY data FROM 's3://adrevealerbucket/dataExport.json' iam_role 'arn:aws:iam::345087817673:role/service-role/AmazonRedshift-CommandsAccessRole-20221216T115930' REGION 'us-east-2' FORMAT AS json 'auto';")
+conn.execute("COPY data FROM 's3://adrevealerbucket/dataExport.json' iam_role 'arn:aws:iam::345087817673:role/service-role/AmazonRedshift-CommandsAccessRole-20221216T115930' REGION 'us-east-2' FORMAT AS json 'auto' timeformat 'DD-MM-YYYY_HH-MI-SS';")
 a.commit()
 #grabs the most recent data_ids enterting into the data base, and limits them to the amount of items found in the length of dictExport.json
 #then sanitizes it into a comma delimited list
